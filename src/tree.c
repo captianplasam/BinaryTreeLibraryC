@@ -102,3 +102,17 @@ void freeTree(Node *rootNode) {
     freeTree(rootNode->leftNode);
     freeNode(rootNode);
 }
+
+void printPath(Path *path) {
+    if (path == NULL) {
+        return;
+    }
+    printf("%s, ", (char *) path->current->data);
+    printPath(path->next);
+}
+
+Path *resetPath(Path *path) {
+    printf("%s\n", (char *) path->current->data);
+    printf("%s\n", (char *) path->prev->current->data);
+    return path;
+}

@@ -1,6 +1,6 @@
 #ifndef _TREE_PROJECT_H
 #define _TREE_PROJECT_H
 
-Path *DepthFirstSearch(void *lookingFor, Node *rootNode);
+Path *DepthFirstSearch(void *lookingFor, Node *rootNode, Path *path, Path *lastPath);
 
 #endif
