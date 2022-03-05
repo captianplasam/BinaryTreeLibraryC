@@ -31,6 +31,7 @@ Path *DepthFirstSearch(void *lookingFor, Node *rootNode, Path *path, Path *lastP
     path->current = rootNode;
     path->prev = lastPath;
     lastPath->next = path;
+    
     if (rootNode->data == lookingFor) {
         return path;
     }
