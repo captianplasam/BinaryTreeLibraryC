@@ -23,6 +23,5 @@ Node *createRootNode(void *data);
 void printTree(Node *rootNode, int space);
 void freeTree(Node *rootNode);
 void printPath(Path *path);
-Path *resetPath(Path *path);
 
 #endif

@@ -7,32 +7,40 @@
 int main(int argc, char *argv[]) {
     Node *rootNode, *currentNode;
     int i;
-    Path *path, *lastPath;
+    Path *path, *lastPath, *tempPath;
 
     if (argc < 2) {
         printf("Invalid amount of arguments\n");
         return 1;
     }
-    path = initalisePath();
-    lastPath = initalisePath();
     rootNode = createRootNode((void *) argv[1]);
     for (i = 2; i < argc; i++) {
         currentNode = createNode(rootNode, (void *) argv[i]);
     }
     printTree(rootNode, 0);
     path = DepthFirstSearch((void *) 3, rootNode, path, lastPath);
-    //path = resetPath(path);
-    //printPath(path);
+    tempPath = path;
+    while (tempPath->next != NULL) {
+        tempPath = tempPath->next;
+    }
+    if (tempPath->current->data == (void *) 3) {
+        printf("Item foound path is: ");
+        printPath(path);
+    } else {
+        printf("%s not in tree\n", (char *) tempPath->current->data);
+    }
 
     return 0;
 }
 
 Path *DepthFirstSearch(void *lookingFor, Node *rootNode, Path *path, Path *lastPath) {
+    path = initalisePath();
+    lastPath = initalisePath();
     path->current = rootNode;
     path->prev = lastPath;
     lastPath->next = path;
-    
-    if (rootNode->data == lookingFor) {
+    if (memcmp(rootNode->data, lookingFor, sizeof(int))) {
+        printf("Test\n");
         return path;
     }
     if ((rootNode->leftNode == NULL) && (rootNode->rightNode == NULL)) {
@@ -40,11 +48,11 @@ Path *DepthFirstSearch(void *lookingFor, Node *rootNode, Path *path, Path *lastP
     }
     if (rootNode->leftNode != NULL) {
         lastPath = path;
-        return DepthFirstSearch(lookingFor, rootNode->leftNode, path->next, lastPath);
+        path->next = DepthFirstSearch(lookingFor, rootNode->leftNode, path->next, lastPath);
     } 
     if (rootNode-> rightNode != NULL) {
         lastPath = path;
-        return DepthFirstSearch(lookingFor, rootNode->rightNode, path->next, lastPath);
+        path->next = DepthFirstSearch(lookingFor, rootNode->rightNode, path->next, lastPath);
     }
     return path;
 }
