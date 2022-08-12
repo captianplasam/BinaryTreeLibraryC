@@ -1,6 +1,10 @@
 #ifndef _TREE_PROJECT_H
 #define _TREE_PROJECT_H
 
-Path *DepthFirstSearch(char *lookingFor, Node *rootNode, Path *path, Path *lastPath);
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+Path *DepthFirstSearch(int lookingFor, Node *rootNode, Path *path, Path *lastPath);
 
 #endif

@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "tree.h"
 
 #define COUNT 10
@@ -13,7 +9,8 @@ Node *initaliseNode(void) {
         printf("Unable to allocate memory\n");
         exit(EXIT_FAILURE);
     }
-    currentNode -> leftNode = currentNode -> rightNode = currentNode -> data = currentNode -> prevNode = NULL;
+    currentNode -> leftNode = currentNode -> rightNode = currentNode -> prevNode = NULL;
+    currentNode -> data = 0;
 
     return currentNode;
 }
@@ -46,14 +43,14 @@ void freePath(Path *path) {
     free(path);
 }
 
-Node *createNode(Node *rootNode, void *data) {
+Node *createNode(Node *rootNode, int data) {
     Node *currentNode, *prevNode, *newNode;
 
     newNode = initaliseNode();
     newNode->data = data;
     currentNode = rootNode;
     while (1) {
-        if(strcmp((char *) currentNode->data, (char *) data) > 0) {
+        if(currentNode->data > data) {
             if (currentNode->leftNode == NULL) {
                 currentNode->leftNode = newNode;
                 currentNode->prevNode = prevNode;
@@ -72,7 +69,7 @@ Node *createNode(Node *rootNode, void *data) {
     }
 }
 
-Node *createRootNode(void *data) {
+Node *createRootNode(int data) {
     Node *rootNode;
 
     rootNode = initaliseNode();
@@ -83,6 +80,7 @@ Node *createRootNode(void *data) {
 
 void printTree(Node *rootNode, int space) {
     int i;
+    char buffer[100];
 
     if (rootNode == NULL) 
         return;
@@ -91,7 +89,8 @@ void printTree(Node *rootNode, int space) {
     printf("\n");
     for (i = COUNT; i < space; i++)
         printf(" ");
-    printf("%s\n", (char *) rootNode->data);
+    itoa(rootNode->data, buffer, 10);
+    printf("%s\n", buffer);
     printTree(rootNode->leftNode, space);
 }
 
@@ -104,13 +103,16 @@ void freeTree(Node *rootNode) {
 }
 
 void printPath(Path *path) {
+    char buffer[100];
     if (path == NULL) {
         return;
     }
     if (path->next != NULL) {
-        printf("%s, ", (char *) path->current->data);  
+        itoa(path->current->data, buffer, 10);
+        printf("%s, ", buffer);  
         printPath(path->next);
     } else {
-        printf("%s\n", (char *) path->current->data);
+        itoa(path->current->data, buffer, 10);
+        printf("%s\n", buffer);
     }
 }

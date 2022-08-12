@@ -1,8 +1,12 @@
 #ifndef _TREE_H
 #define _TREE_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 typedef struct Node {
-    void *data;
+    int data;
     struct Node *leftNode;
     struct Node *rightNode;
     struct Node *prevNode;
@@ -18,8 +22,8 @@ Node *initaliseNode(void);
 Path *initalisePath(void);
 void freeNode(Node *currentNode);
 void freePath(Path *path);
-Node *createNode(Node *rootNode, void *data);
-Node *createRootNode(void *data);
+Node *createNode(Node *rootNode, int data);
+Node *createRootNode(int data);
 void printTree(Node *rootNode, int space);
 void freeTree(Node *rootNode);
 void printPath(Path *path);
