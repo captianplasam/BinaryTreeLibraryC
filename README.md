@@ -49,6 +49,6 @@ There is a custom struct in tree.h that uses a typedef of Path, this is used as 
 - **initialisePath()** - This takes in no arguments and returns a Path data type, this creates and assigns memory to the first step of a path to a certain node.
 - **createPath()** - This takes in a Path data type, and a Node data type, and returns a Path data type. This will assign memory to a Path data type atach it to the Path passed in and assign the Node passed in to the newly created Path.
 - **printPath()** - This takes in a Path data type as an argument and returns nothing. This will print out a path starting from the path given to it to the end of the path.
-- **freePath()** - This takes a Path data type as an argument and returns nothing, this will unassign any memory attached to the current step in the path that is passed in. 
+- **freePath()** - This takes a Path data type as an argument and returns nothing, this will unassign any memory attached to the current step and any future steps in the path that is passed in. 
 - **printTree()** - This takes in a Node data type and an integer called space and returns nothing. This will print a full tree starting from the node it is given. When calling this fucntion space should be called as 0.
 - **freeTree()** - This will take in a Node data type and returns nothing. This will free everything on the tree before and including the node passed in.
