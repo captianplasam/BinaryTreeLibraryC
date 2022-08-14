@@ -9,7 +9,6 @@ typedef struct Node {
     int data;
     struct Node *leftNode;
     struct Node *rightNode;
-    struct Node *prevNode;
 } Node;
 
 typedef struct Path {
@@ -19,13 +18,15 @@ typedef struct Path {
 } Path;
 
 Node *initaliseNode(void);
-Path *initalisePath(void);
-void freeNode(Node *currentNode);
-void freePath(Path *path);
-Node *createNode(Node *rootNode, int data);
 Node *createRootNode(int data);
+Node *createNode(Node *rootNode, int data);
+void printNode(Node *currentNode);
+void freeNode(Node *currentNode);
+Path *initalisePath(void);
+Path *createPath(Path *lastPath, Node *currentNode);
+void printPath(Path *path);
+void freePath(Path *path);
 void printTree(Node *rootNode, int space);
 void freeTree(Node *rootNode);
-void printPath(Path *path);
 
 #endif

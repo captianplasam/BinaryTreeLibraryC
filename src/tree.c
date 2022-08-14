@@ -9,10 +9,65 @@ Node *initaliseNode(void) {
         printf("Unable to allocate memory\n");
         exit(EXIT_FAILURE);
     }
-    currentNode -> leftNode = currentNode -> rightNode = currentNode -> prevNode = NULL;
+    currentNode -> leftNode = currentNode -> rightNode = NULL;
     currentNode -> data = 0;
 
     return currentNode;
+}
+
+Node *createRootNode(int data) {
+    Node *rootNode;
+
+    rootNode = initaliseNode();
+    rootNode->data = data;
+
+    return rootNode;
+}
+
+Node *createNode(Node *rootNode, int data) {
+    Node *currentNode, *newNode;
+
+    newNode = initaliseNode();
+    newNode->data = data;
+    currentNode = rootNode;
+    while (1) {
+        if(currentNode->data > data) {
+            if (currentNode->leftNode == NULL) {
+                currentNode->leftNode = newNode;
+                return currentNode;
+            }
+            currentNode = currentNode->leftNode;
+        } else {
+            if (currentNode->rightNode == NULL) {
+                currentNode->rightNode = newNode;
+                return currentNode;
+            }
+            currentNode = currentNode->rightNode;
+        }
+    }
+}
+
+void printNode(Node *currentNode) {
+    char leftNode[10], rightNode[10]; 
+    
+    if (currentNode) {
+        sprintf(leftNode, "%s", "NULL");
+        sprintf(rightNode, "%s", "NULL");
+        if (currentNode->leftNode)
+            sprintf(leftNode, "%d", currentNode->leftNode->data);
+        if (currentNode->rightNode)
+            sprintf(rightNode, "%d", currentNode->rightNode->data);
+        printf("Current Node: %d, Left Node: %s, Right Node: %s\n", currentNode->data, leftNode, rightNode);
+        return;
+    }
+    printf("Node does not exist\n");
+}
+
+void freeNode(Node *currentNode) {
+    if (!(currentNode)) {
+        return;
+    }
+    free(currentNode);
 }
 
 Path *initalisePath(void) {
@@ -28,11 +83,36 @@ Path *initalisePath(void) {
     return path;
 }
 
-void freeNode(Node *currentNode) {
-    if (!(currentNode)) {
+Path *createPath(Path *lastPath, Node *currentNode) {
+    Path *currentPath;
+
+    if (lastPath && currentNode) {
+        currentPath = initalisePath();
+        lastPath->next = currentPath;
+        currentPath->prev = lastPath;
+        currentPath->current = currentNode;
+        currentPath->next = NULL;
+        return currentPath;
+    }
+    printf("Error path or node enter is NULL\n");
+
+    return NULL;
+}
+
+void printPath(Path *path) {
+    char buffer[10];
+
+    if (path == NULL) {
         return;
     }
-    free(currentNode);
+    if (path->next != NULL) {
+        sprintf(buffer, "%d", path->current->data);
+        printf("%s, ", buffer);  
+        printPath(path->next);
+    } else {
+        sprintf(buffer, "%d", path->current->data);
+        printf("%s\n", buffer);
+    }
 }
 
 void freePath(Path *path) {
@@ -43,44 +123,9 @@ void freePath(Path *path) {
     free(path);
 }
 
-Node *createNode(Node *rootNode, int data) {
-    Node *currentNode, *prevNode, *newNode;
-
-    newNode = initaliseNode();
-    newNode->data = data;
-    currentNode = rootNode;
-    while (1) {
-        if(currentNode->data > data) {
-            if (currentNode->leftNode == NULL) {
-                currentNode->leftNode = newNode;
-                currentNode->prevNode = prevNode;
-                return currentNode;
-            }
-            prevNode = currentNode;
-            currentNode = currentNode->leftNode;
-        } else {
-            if (currentNode->rightNode == NULL) {
-                currentNode->rightNode = newNode;
-                return currentNode;
-            }
-            prevNode = currentNode;
-            currentNode = currentNode->rightNode;
-        }
-    }
-}
-
-Node *createRootNode(int data) {
-    Node *rootNode;
-
-    rootNode = initaliseNode();
-    rootNode->data = data;
-
-    return rootNode;
-}
-
 void printTree(Node *rootNode, int space) {
     int i;
-    char buffer[100];
+    char buffer[10];
 
     if (rootNode == NULL) 
         return;
@@ -89,7 +134,7 @@ void printTree(Node *rootNode, int space) {
     printf("\n");
     for (i = COUNT; i < space; i++)
         printf(" ");
-    itoa(rootNode->data, buffer, 10);
+    sprintf(buffer, "%d", rootNode->data);
     printf("%s\n", buffer);
     printTree(rootNode->leftNode, space);
 }
@@ -100,19 +145,4 @@ void freeTree(Node *rootNode) {
     freeTree(rootNode->rightNode);
     freeTree(rootNode->leftNode);
     freeNode(rootNode);
-}
-
-void printPath(Path *path) {
-    char buffer[100];
-    if (path == NULL) {
-        return;
-    }
-    if (path->next != NULL) {
-        itoa(path->current->data, buffer, 10);
-        printf("%s, ", buffer);  
-        printPath(path->next);
-    } else {
-        itoa(path->current->data, buffer, 10);
-        printf("%s\n", buffer);
-    }
 }
